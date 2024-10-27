@@ -1,0 +1,82 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+#map {
+    width: 100%;
+    height: 100vh;
+}
+
+.modal {
+    display: none; /* Esconder o modal por padrão */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4); /* Fundo semi-transparente */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.contagem {
+    background-color: transparent; /* Remove o fundo */
+    text-align: center;
+    font-weight: bold;
+    font-size: 9px; /* Tamanho da fonte para destaque */
+    position:static;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 90%;
+        padding: 15px;
+    }
+
+    .close {
+        font-size: 24px; /* Tamanho menor para dispositivos móveis */
+    }
+
+    .contagem {
+        font-size: 14px; /* Tamanho menor da contagem em telas menores */
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-content {
+        width: 95%;
+        padding: 10px;
+    }
+
+    .close {
+        font-size: 20px; /* Tamanho ainda menor para dispositivos muito pequenos */
+    }
+
+    .contagem {
+        font-size: 12px; /* Tamanho ainda menor da contagem em telas muito pequenas */
+    }
+}
