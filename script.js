@@ -3,7 +3,7 @@ var map = L.map('map').setView([-28.26185, -52.41545], 19);
 
 // Adicionar uma camada de tiles
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
+    maxZoom: 20,
 }).addTo(map);
 
 // Ícones para os estados dos semáforos
@@ -48,7 +48,6 @@ function obterEstadoSemaforo(horarioVerdeInicial, duracaoFechado, cicloTotal) {
     var agora = new Date();
     var horarioBrasilia = new Date(agora.toLocaleString("en-US", { timeZone: "America/Sao_Paulo" }));
 
-    // Extraindo horas, minutos, segundos e milissegundos do horário inicial
     var partes = horarioVerdeInicial.split(':');
     var horas = parseInt(partes[0]);
     var minutos = parseInt(partes[1]);
@@ -72,120 +71,118 @@ function obterEstadoSemaforo(horarioVerdeInicial, duracaoFechado, cicloTotal) {
 }
 
 // Dados dos semáforos
-var semaforos = [
-    {
-        localizacao: 'Benjamin x BRaz',
-        coords: [-28.259174, -52.403409],
-        horarioVerdeInicial: '10:28:09',
-        duracaoFechado: 42,
-        cicloTotal: 140
-    },
-    {
-        localizacao: 'Benjamin x indep',
-        coords: [-28.261279, -52.402232],
-        horarioVerdeInicial: '10:09:02',
-        duracaoFechado: 42,
-        cicloTotal: 140
-    },
-    {
-        localizacao: 'Dr v x presvargas',
-        coords: [-28.265356, -52.400408],
-        horarioVerdeInicial: '10:09:02',
-        duracaoFechado: 70,
-        cicloTotal: 140
-    },
-    {
-        localizacao: 'Benjamin x GenOsorio',
-        coords: [-28.262403, -52.401465],
-        horarioVerdeInicial: '10:25:15',
-        duracaoFechado: 27,
-        cicloTotal: 64
-    },
-    {
-        localizacao: 'GenOsorio x FagundesReis',
-        coords: [-28.262781, -52.402519],
-        horarioVerdeInicial: '08:55:40',
-        duracaoFechado: 70,
-        cicloTotal: 140
-    },
-    {
-        localizacao: 'GenOsorio x GenNeto',
-        coords: [-28.26443, -52.405989],
-        horarioVerdeInicial: '08:56:56',
-        duracaoFechado: 50,
-        cicloTotal: 100
-    },
-    {
-        localizacao: 'Bento x GenOsorio',
-        coords: [-28.26389, -52.40504],
-        horarioVerdeInicial: '09:01:46',
-        duracaoFechado: 70,
-        cicloTotal: 140
-    },
-    {
-        localizacao: 'cap. araujo, com uruguai',
-        coords: [-28.26185, -52.41545],
-        horarioVerdeInicial: '16:11:27',
-        duracaoFechado: 88,
-        cicloTotal: 118
-    },
-    {
-        localizacao: 'Nasc Vargas e Rua Bento Gonçalves',
-        coords: [-28.255773, -52.409877],
-        horarioVerdeInicial: '14:33:49',
-        duracaoFechado: 88,
-        cicloTotal: 118
-    },
-    {
-        localizacao: 'cap. araujo, av brasil',
-        coords: [-28.26389, -52.41427],
-        horarioVerdeInicial: '16:13:06',
-        duracaoFechado: 88,
-        cicloTotal: 118
-    },
-    {
-        localizacao: 'cap araujo general osorio',
-        coords: [-28.26724, -52.41222],
-        horarioVerdeInicial: '16:14:53',
-        duracaoFechado: 88,
-        cicloTotal: 118
-    },
-    {
-        localizacao: 'Av7 X CelChic',
-        coords: [-28.265920, -52.406869],
-        horarioVerdeInicial: '16:16:15',
-        duracaoFechado: 88,
-        cicloTotal: 118
-    },
-    {
-        localizacao: 'uruguai benjammin',
-        coords: [-28.256755, -52.404849],
-        horarioVerdeInicial: '14:32:15',
-        duracaoFechado: 88,
-        cicloTotal: 118
-    },
-    {
-        localizacao: 'Gen GUim x CelPel',
-        coords: [-28.263903, -52.397264],
-        horarioVerdeInicial: '14:32:15',
-        duracaoFechado: 88,
-        cicloTotal: 118
-    },
-    {
-        localizacao: 'CelPel x genguim',
-        coords: [-28.263809, -52.397339],
-        horarioVerdeInicial: '14:32:15',
-        duracaoFechado: 88,
-        cicloTotal: 118
-    },
-];
-    // Adicione os outros semáforos aqui
 
+    var semaforos = [
+        {
+            localizacao: 'Benjamin x BRaz',
+            coords: [-28.259174, -52.403409],
+            horarioVerdeInicial: '10:28:09',
+            duracaoFechado: 42,
+            cicloTotal: 140
+        },
+        {
+            localizacao: 'Benjamin x indep',
+            coords: [-28.261279, -52.402232],
+            horarioVerdeInicial: '10:09:02',
+            duracaoFechado: 42,
+            cicloTotal: 140
+        },
+        {
+            localizacao: 'Dr v x presvargas',
+            coords: [-28.265356, -52.400408],
+            horarioVerdeInicial: '10:09:02',
+            duracaoFechado: 70,
+            cicloTotal: 140
+        },
+        {
+            localizacao: 'Benjamin x GenOsorio',
+            coords: [-28.262403, -52.401465],
+            horarioVerdeInicial: '10:25:15',
+            duracaoFechado: 27,
+            cicloTotal: 64
+        },
+        {
+            localizacao: 'GenOsorio x FagundesReis',
+            coords: [-28.262781, -52.402519],
+            horarioVerdeInicial: '08:55:40',
+            duracaoFechado: 70,
+            cicloTotal: 140
+        },
+        {
+            localizacao: 'GenOsorio x GenNeto',
+            coords: [-28.26443, -52.405989],
+            horarioVerdeInicial: '08:56:56',
+            duracaoFechado: 50,
+            cicloTotal: 100
+        },
+        {
+            localizacao: 'Bento x GenOsorio',
+            coords: [-28.26389, -52.40504],
+            horarioVerdeInicial: '09:01:46',
+            duracaoFechado: 70,
+            cicloTotal: 140
+        },
+        {
+            localizacao: 'cap. araujo, com uruguai',
+            coords: [-28.26185, -52.41545],
+            horarioVerdeInicial: '16:11:27',
+            duracaoFechado: 88,
+            cicloTotal: 118
+        },
+        {
+            localizacao: 'Nasc Vargas e Rua Bento Gonçalves',
+            coords: [-28.255773, -52.409877],
+            horarioVerdeInicial: '14:33:49',
+            duracaoFechado: 88,
+            cicloTotal: 118
+        },
+        {
+            localizacao: 'cap. araujo, av brasil',
+            coords: [-28.26389, -52.41427],
+            horarioVerdeInicial: '16:13:06',
+            duracaoFechado: 88,
+            cicloTotal: 118
+        },
+        {
+            localizacao: 'cap araujo general osorio',
+            coords: [-28.26724, -52.41222],
+            horarioVerdeInicial: '16:14:53',
+            duracaoFechado: 88,
+            cicloTotal: 118
+        },
+        {
+            localizacao: 'Av7 X CelChic',
+            coords: [-28.265920, -52.406869],
+            horarioVerdeInicial: '16:16:15',
+            duracaoFechado: 88,
+            cicloTotal: 118
+        },
+        {
+            localizacao: 'uruguai benjammin',
+            coords: [-28.256755, -52.404849],
+            horarioVerdeInicial: '14:32:15',
+            duracaoFechado: 88,
+            cicloTotal: 118
+        },
+        {
+            localizacao: 'Gen GUim x CelPel',
+            coords: [-28.263903, -52.397264],
+            horarioVerdeInicial: '14:32:15',
+            duracaoFechado: 88,
+            cicloTotal: 118
+        },
+        {
+            localizacao: 'CelPel x genguim',
+            coords: [-28.263809, -52.397339],
+            horarioVerdeInicial: '14:32:15',
+            duracaoFechado: 88,
+            cicloTotal: 118
+        },
+];
 
 // Função para adicionar os semáforos no mapa
 function adicionarSemaforos() {
     semaforos.forEach(function(semaforo, index) {
-        // Recupera os dados do Local Storage, se existirem
         var armazenados = JSON.parse(localStorage.getItem(`semaforo_${index}`));
         if (armazenados) {
             semaforo.horarioVerdeInicial = armazenados.horarioVerdeInicial;
@@ -218,10 +215,9 @@ function adicionarSemaforos() {
                 document.getElementById("horarioVerdeInicial").value = semaforo.horarioVerdeInicial;
                 document.getElementById("duracaoFechado").value = semaforo.duracaoFechado;
                 document.getElementById("cicloTotal").value = semaforo.cicloTotal;
-                semaforoAtual = semaforo; // Armazena o semáforo selecionado
+                semaforoAtual = semaforo;
             });
 
-        // Atualiza a contagem e o ícone a cada segundo
         setInterval(function() {
             estadoInfo = obterEstadoSemaforo(
                 semaforo.horarioVerdeInicial, 
@@ -249,7 +245,6 @@ document.getElementById("salvar").onclick = function() {
     semaforoAtual.duracaoFechado = duracaoFechado;
     semaforoAtual.cicloTotal = cicloTotal;
 
-    // Armazena as alterações no Local Storage
     var index = semaforos.indexOf(semaforoAtual);
     localStorage.setItem(`semaforo_${index}`, JSON.stringify({
         horarioVerdeInicial: horarioVerdeInicial,
@@ -257,50 +252,40 @@ document.getElementById("salvar").onclick = function() {
         cicloTotal: cicloTotal
     }));
 
-    modal.style.display = "none"; // Fecha o modal
+    modal.style.display = "none";
 };
 
-// Adicionar os semáforos ao mapa
+// Adiciona os semáforos ao mapa
 adicionarSemaforos();
 
-// Atualiza a localização do usuário a cada segundo
-navigator.geolocation.watchPosition(function(position) {
-    var userLatLng = [position.coords.latitude, position.coords.longitude];
-    var userMarker = L.marker(userLatLng, { icon: iconeUsuario }).addTo(map);
-    map.setView(userLatLng, 19);
+// Variável para o marcador do usuário (carro)
+var userMarker = null;
 
-    // Atualiza a localização do carro a cada segundo
-    setInterval(function() {
-        userMarker.setLatLng(userLatLng);
-    }, 1000);
-    let carMarker; // Variável para armazenar o marcador do carro
-
-    function updateCarLocation(lat, lng) {
-        if (carMarker) {
-            // Remove o marcador antigo
-            map.removeLayer(carMarker);
-        }
-        // Cria um novo marcador para o carro
-        carMarker = L.marker([lat, lng], {icon: carIcon}).addTo(map);
+// Função para atualizar a localização do usuário
+function updateCarLocation(lat, lng) {
+    if (userMarker) {
+        userMarker.setLatLng([lat, lng]); // Atualiza a posição do marcador existente
+    } else {
+        // Cria o marcador apenas uma vez
+        userMarker = L.marker([lat, lng], { icon: iconeUsuario }).addTo(map);
     }
-    
-   
-    navigator.geolocation.watchPosition(function(position) {
+}
+
+// Configuração para obter e atualizar a localização do usuário em tempo real
+navigator.geolocation.watchPosition(
+    function(position) {
         const lat = position.coords.latitude;
         const lng = position.coords.longitude;
-        updateCarLocation(lat, lng); // Atualiza a localização do carro
-    });
-    
-function updateMapWithNewData() {
-    let currentZoom = map.getZoom();
-    let currentCenter = map.getCenter();
 
-    // Atualize o mapa com os dados novos
- 
+        // Chama a função de atualização do carro
+        updateCarLocation(lat, lng);
 
-    // Restaura o zoom e a posição
-    map.setView(currentCenter, currentZoom);
-}
-}, function(error) {
-    console.log("Erro ao obter a localização do usuário: ", error);
-});
+        // Ajusta a visualização para seguir o usuário sem reiniciar o zoom
+        map.setView([lat, lng], map.getZoom());
+    },
+    function(error) {
+        console.log("Erro ao obter a localização do usuário: ", error);
+    },
+    { enableHighAccuracy: true, maximumAge: 1000, timeout: 5000 }
+);
+
