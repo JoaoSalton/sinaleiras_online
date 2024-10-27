@@ -177,6 +177,13 @@ var semaforos = [
         duracaoFechado: 88,
         cicloTotal: 118
     },
+    {
+        localizacao: 'Serv Natividade',
+        coords: [-27.763034, -48.572472],
+        horarioVerdeInicial: '14:32:15',
+        duracaoFechado: 88,
+        cicloTotal: 118
+    },
 ];
 
 // Função para adicionar os semáforos no mapa
