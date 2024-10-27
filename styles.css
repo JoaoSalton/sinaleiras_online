@@ -41,3 +41,16 @@ body {
     text-decoration: none;
     cursor: pointer;
 }
+/* Ajustes gerais para o popup */
+.leaflet-popup {
+    max-width: 90vw; /* Limita a largura do popup a 90% da largura da tela */
+    word-wrap: break-word; /* Quebra as palavras longas para caber no popup */
+}
+
+/* Ajustes específicos para telas menores */
+@media (max-width: 600px) {
+    .leaflet-popup {
+        font-size: 14px; /* Aumenta a legibilidade no celular */
+        padding: 10px; /* Adiciona algum espaçamento */
+    }
+}
