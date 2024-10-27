@@ -261,13 +261,21 @@ adicionarSemaforos();
 // Variável para o marcador do usuário (carro)
 var userMarker = null;
 
-// Função para atualizar a localização do usuário
+// Função para atualizar a localização do usuário (carro)
 function updateCarLocation(lat, lng) {
     if (userMarker) {
         userMarker.setLatLng([lat, lng]); // Atualiza a posição do marcador existente
     } else {
         // Cria o marcador apenas uma vez
         userMarker = L.marker([lat, lng], { icon: iconeUsuario }).addTo(map);
+    }
+}
+
+// Função para remover o marcador do carro
+function removeCarMarker() {
+    if (userMarker) {
+        map.removeLayer(userMarker); // Remove o marcador do mapa
+        userMarker = null; // Reseta a variável para que possa ser recriado, se necessário
     }
 }
 
@@ -288,4 +296,5 @@ navigator.geolocation.watchPosition(
     },
     { enableHighAccuracy: true, maximumAge: 1000, timeout: 5000 }
 );
+
 
