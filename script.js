@@ -1,5 +1,5 @@
 // Inicialização do mapa
-var map = L.map('map').setView([-28.26185, -52.41545], 13); // Centralizar o mapa
+var map = L.map('map').setView([-28.26185, -52.41545], 13);
 
 // Adicionar uma camada de tiles
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -9,28 +9,27 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 // Ícones para os estados dos semáforos
 var iconeVerde = L.icon({
     iconUrl: 'green.png',
-    iconSize: [25, 25], // Tamanho do ícone
-    iconAnchor: [10, 20], // Ponto de ancoragem
+    iconSize: [25, 25],
+    iconAnchor: [12, 25],
 });
 
 var iconeVermelho = L.icon({
     iconUrl: 'red.png',
-    iconSize: [25, 25], // Tamanho do ícone
-    iconAnchor: [10, 10], // Ponto de ancoragem
+    iconSize: [25, 25],
+    iconAnchor: [12, 25],
 });
 
 // Ícone personalizado para a localização do usuário
 var iconeUsuario = L.icon({
-    iconUrl: 'car.png', // Substitua pelo caminho para o seu ícone
-    iconSize: [30, 30], // Tamanho do ícone
-    iconAnchor: [15, 30], // Ponto de ancoragem
+    iconUrl: 'car.png',
+    iconSize: [30, 30],
+    iconAnchor: [15, 30],
 });
 
 // Modal
 var modal = document.getElementById("modal");
-var modalTitle = document.getElementById("modal-title");
-var modalBody = document.getElementById("modal-body");
 var span = document.getElementsByClassName("close")[0];
+var semaforoAtual; // Armazena o semáforo atualmente selecionado
 
 // Fecha o modal quando o usuário clica no "X"
 span.onclick = function() {
@@ -49,11 +48,17 @@ function obterEstadoSemaforo(horarioVerdeInicial, duracaoFechado, cicloTotal) {
     var agora = new Date();
     var horarioBrasilia = new Date(agora.toLocaleString("en-US", { timeZone: "America/Sao_Paulo" }));
 
-    var [horas, minutos, segundos] = horarioVerdeInicial.split(':').map(Number);
-    var inicioSemaforo = new Date(horarioBrasilia);
-    inicioSemaforo.setHours(horas, minutos, segundos);
+    // Extraindo horas, minutos, segundos e milissegundos do horário inicial
+    var partes = horarioVerdeInicial.split(':');
+    var horas = parseInt(partes[0]);
+    var minutos = parseInt(partes[1]);
+    var segundos = parseInt(partes[2]);
+    var milissegundos = parseInt(partes[3] || 0);
 
-    var tempoDecorrido = (horarioBrasilia - inicioSemaforo) / 1000; // Em segundos
+    var inicioSemaforo = new Date(horarioBrasilia);
+    inicioSemaforo.setHours(horas, minutos, segundos, milissegundos);
+
+    var tempoDecorrido = Math.floor((horarioBrasilia - inicioSemaforo) / 1000);
     if (tempoDecorrido < 0) {
         tempoDecorrido += 86400; // Ajusta para o ciclo de 24 horas
     }
@@ -62,18 +67,39 @@ function obterEstadoSemaforo(horarioVerdeInicial, duracaoFechado, cicloTotal) {
 
     return {
         estado: tempoNoCiclo < duracaoFechado ? 'vermelho' : 'verde',
-        tempoRestante: tempoNoCiclo < duracaoFechado ? duracaoFechado - tempoNoCiclo : cicloTotal - tempoNoCiclo // Tempo restante
+        tempoRestante: tempoNoCiclo < duracaoFechado ? duracaoFechado - tempoNoCiclo : cicloTotal - tempoNoCiclo
     };
 }
 
 // Dados dos semáforos
 var semaforos = [
     {
-        localizacao: 'Benjamin x GenOsorio',
-        coords: [-28.262403, -52.401465],
-        horarioVerdeInicial: '08:55:12',
+        localizacao: 'Benjamin x BRaz',
+        coords: [-28.259174, -52.403409],
+        horarioVerdeInicial: '10:28:09',
+        duracaoFechado: 42,
+        cicloTotal: 140
+    },
+    {
+        localizacao: 'Benjamin x indep',
+        coords: [-28.261279, -52.402232],
+        horarioVerdeInicial: '10:09:02',
+        duracaoFechado: 42,
+        cicloTotal: 140
+    },
+    {
+        localizacao: 'Dr v x presvargas',
+        coords: [-28.265356, -52.400408],
+        horarioVerdeInicial: '10:09:02',
         duracaoFechado: 70,
         cicloTotal: 140
+    },
+    {
+        localizacao: 'Benjamin x GenOsorio',
+        coords: [-28.262403, -52.401465],
+        horarioVerdeInicial: '10:25:15',
+        duracaoFechado: 27,
+        cicloTotal: 64
     },
     {
         localizacao: 'GenOsorio x FagundesReis',
@@ -153,44 +179,49 @@ var semaforos = [
         cicloTotal: 118
     },
 ];
+    // Adicione os outros semáforos aqui
 
 
 // Função para adicionar os semáforos no mapa
 function adicionarSemaforos() {
-    semaforos.forEach(function(semaforo) {
-        // Calcular o estado inicial do semáforo
+    semaforos.forEach(function(semaforo, index) {
+        // Recupera os dados do Local Storage, se existirem
+        var armazenados = JSON.parse(localStorage.getItem(`semaforo_${index}`));
+        if (armazenados) {
+            semaforo.horarioVerdeInicial = armazenados.horarioVerdeInicial;
+            semaforo.duracaoFechado = armazenados.duracaoFechado;
+            semaforo.cicloTotal = armazenados.cicloTotal;
+        }
+
         var estadoInfo = obterEstadoSemaforo(
             semaforo.horarioVerdeInicial, 
             semaforo.duracaoFechado, 
             semaforo.cicloTotal
         );
 
-        // Definir o ícone com base no estado inicial
         var iconeAtual = estadoInfo.estado === 'verde' ? iconeVerde : iconeVermelho;
 
-        // Criar o marcador no mapa com o ícone correto
         var marcador = L.marker(semaforo.coords, { icon: iconeAtual }).addTo(map);
-
-        // Adicionar contagem regressiva
+        
         var contagemDiv = L.divIcon({
             className: 'contagem',
             html: `${estadoInfo.tempoRestante} seg`,
             iconSize: [50, 20],
         });
 
-        // Criar o marcador de contagem com a mesma posição do semáforo
         var contagemMarker = L.marker(semaforo.coords, { icon: contagemDiv }).addTo(map);
 
-        // Adicionar um popup com o nome da rua ou cruzamento
         marcador.bindPopup(`<b>${semaforo.localizacao}</b><br>Semáforo está: ${estadoInfo.estado}.<br>Tempo restante: ${estadoInfo.tempoRestante} segundos.`)
             .on('click', function() {
-                // Exibir modal com informações detalhadas ao clicar no marcador
                 modal.style.display = "block";
-                modalTitle.innerText = semaforo.localizacao;
-                modalBody.innerText = `Semáforo está: ${estadoInfo.estado}. Tempo restante: ${estadoInfo.tempoRestante} segundos.`;
+                document.getElementById("modal-title").innerText = semaforo.localizacao;
+                document.getElementById("horarioVerdeInicial").value = semaforo.horarioVerdeInicial;
+                document.getElementById("duracaoFechado").value = semaforo.duracaoFechado;
+                document.getElementById("cicloTotal").value = semaforo.cicloTotal;
+                semaforoAtual = semaforo; // Armazena o semáforo selecionado
             });
 
-        // Atualizar a contagem e o ícone a cada segundo
+        // Atualiza a contagem e o ícone a cada segundo
         setInterval(function() {
             estadoInfo = obterEstadoSemaforo(
                 semaforo.horarioVerdeInicial, 
@@ -198,45 +229,50 @@ function adicionarSemaforos() {
                 semaforo.cicloTotal
             );
 
-            var tempoAtual = estadoInfo.tempoRestante;
+            contagemDiv.options.html = `${estadoInfo.tempoRestante} seg`;
+            contagemMarker.setIcon(contagemDiv); 
 
-            // Atualizar popup com o estado atual
-            marcador.bindPopup(`<b>${semaforo.localizacao}</b><br>Semáforo está: ${estadoInfo.estado}.<br>Tempo restante: ${tempoAtual} segundos.`);
-
-            // Atualizar o marcador de contagem
-            contagemDiv.options.html = `${tempoAtual} seg`;
-            contagemMarker.setIcon(contagemDiv); // Atualiza o marcador de contagem
-            
-            // Atualizar o ícone do semáforo com base no estado atual
             var novoIcone = estadoInfo.estado === 'verde' ? iconeVerde : iconeVermelho;
-            marcador.setIcon(novoIcone); // Altera o ícone do semáforo
+            marcador.setIcon(novoIcone);
+            marcador.bindPopup(`<b>${semaforo.localizacao}</b><br>Semáforo está: ${estadoInfo.estado}.<br>Tempo restante: ${estadoInfo.tempoRestante} segundos.`);
         }, 1000);
     });
 }
 
+// Salva as alterações feitas no semáforo
+document.getElementById("salvar").onclick = function() {
+    var horarioVerdeInicial = document.getElementById("horarioVerdeInicial").value;
+    var duracaoFechado = parseInt(document.getElementById("duracaoFechado").value);
+    var cicloTotal = parseInt(document.getElementById("cicloTotal").value);
+
+    semaforoAtual.horarioVerdeInicial = horarioVerdeInicial;
+    semaforoAtual.duracaoFechado = duracaoFechado;
+    semaforoAtual.cicloTotal = cicloTotal;
+
+    // Armazena as alterações no Local Storage
+    var index = semaforos.indexOf(semaforoAtual);
+    localStorage.setItem(`semaforo_${index}`, JSON.stringify({
+        horarioVerdeInicial: horarioVerdeInicial,
+        duracaoFechado: duracaoFechado,
+        cicloTotal: cicloTotal
+    }));
+
+    modal.style.display = "none"; // Fecha o modal
+};
+
 // Adicionar os semáforos ao mapa
 adicionarSemaforos();
 
-// Função para adicionar a localização do usuário no mapa
-function adicionarLocalizacaoUsuario() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-            var userCoords = [position.coords.latitude, position.coords.longitude];
+// Atualiza a localização do usuário a cada segundo
+navigator.geolocation.watchPosition(function(position) {
+    var userLatLng = [position.coords.latitude, position.coords.longitude];
+    var userMarker = L.marker(userLatLng, { icon: iconeUsuario }).addTo(map);
+    map.setView(userLatLng, 13);
 
-            // Adicionar marcador para a localização do usuário com ícone personalizado
-            L.marker(userCoords, { icon: iconeUsuario }).addTo(map)
-                .bindPopup('Você está aqui')
-                .openPopup();
-
-            // Centralizar o mapa na localização do usuário
-            map.setView(userCoords, 13);
-        }, function() {
-            alert('Não foi possível obter sua localização.');
-        });
-    } else {
-        alert('Geolocalização não é suportada por este navegador.');
-    }
-}
-
-// Adicionar a localização do usuário ao mapa
-adicionarLocalizacaoUsuario();
+    // Atualiza a localização do carro a cada segundo
+    setInterval(function() {
+        userMarker.setLatLng(userLatLng);
+    }, 1000);
+}, function(error) {
+    console.log("Erro ao obter a localização do usuário: ", error);
+});
