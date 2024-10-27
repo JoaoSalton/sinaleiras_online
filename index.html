@@ -3,23 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mapa de Semáforos</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <title>Mapa de Sinaleiras</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 </head>
 <body>
     <div id="map"></div>
-
+    
     <!-- Modal -->
     <div id="modal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
             <h2 id="modal-title"></h2>
-            <p id="modal-body"></p>
+            <div id="modal-body">
+                <label for="horarioVerdeInicial">Horário Verde Inicial (HH:MM:SS.milliseconds):</label>
+                <input type="text" id="horarioVerdeInicial" placeholder="10:28:09.000">
+                <label for="duracaoFechado">Duração Fechado (segundos):</label>
+                <input type="number" id="duracaoFechado" placeholder="42">
+                <label for="cicloTotal">Ciclo Total (segundos):</label>
+                <input type="number" id="cicloTotal" placeholder="140">
+                <button id="salvar">Salvar</button>
+            </div>
         </div>
     </div>
 
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
