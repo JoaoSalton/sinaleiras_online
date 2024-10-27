@@ -22,10 +22,12 @@ body {
 
 .modal-content {
     background-color: #fefefe;
-    margin: 15% auto;
-    padding: 20px;
+    margin: auto auto;
+    padding: 8px;
     border: 1px solid #888;
-    width: 300px;
+    border-radius: 15px;
+    width: 250px;
+    font-size: 10px;
 }
 
 .close {
@@ -43,7 +45,7 @@ body {
 }
 /* Ajustes gerais para o popup */
 .leaflet-popup {
-    max-width: 90vw; /* Limita a largura do popup a 90% da largura da tela */
+    max-width: 50vw; /* Limita a largura do popup a 50% da largura da tela */
     word-wrap: break-word; /* Quebra as palavras longas para caber no popup */
 }
 
