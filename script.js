@@ -178,8 +178,22 @@ var semaforos = [
         cicloTotal: 118
     },
     {
-        localizacao: 'Serv Natividade',
-        coords: [-27.763034, -48.572472],
+        localizacao: 'Francisco ALves x av pres',
+        coords: [-28.265722, -52.398715],
+        horarioVerdeInicial: '14:32:15',
+        duracaoFechado: 88,
+        cicloTotal: 118
+    },
+    {
+        localizacao: 'av presx lar da menina',
+        coords: [-28.2661, -52.397873],
+        horarioVerdeInicial: '14:32:15',
+        duracaoFechado: 88,
+        cicloTotal: 118
+    },
+    {
+        localizacao: 'av presx prest guimaraes',
+        coords: [-28.266023, -52.397605],
         horarioVerdeInicial: '14:32:15',
         duracaoFechado: 88,
         cicloTotal: 118
