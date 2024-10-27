@@ -1,5 +1,5 @@
 // Inicialização do mapa
-var map = L.map('map').setView([-28.26185, -52.41545], 13);
+var map = L.map('map').setView([-28.26185, -52.41545], 19);
 
 // Adicionar uma camada de tiles
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -267,12 +267,40 @@ adicionarSemaforos();
 navigator.geolocation.watchPosition(function(position) {
     var userLatLng = [position.coords.latitude, position.coords.longitude];
     var userMarker = L.marker(userLatLng, { icon: iconeUsuario }).addTo(map);
-    map.setView(userLatLng, 13);
+    map.setView(userLatLng, 19);
 
     // Atualiza a localização do carro a cada segundo
     setInterval(function() {
         userMarker.setLatLng(userLatLng);
     }, 1000);
+    let carMarker; // Variável para armazenar o marcador do carro
+
+    function updateCarLocation(lat, lng) {
+        if (carMarker) {
+            // Remove o marcador antigo
+            map.removeLayer(carMarker);
+        }
+        // Cria um novo marcador para o carro
+        carMarker = L.marker([lat, lng], {icon: carIcon}).addTo(map);
+    }
+    
+   
+    navigator.geolocation.watchPosition(function(position) {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        updateCarLocation(lat, lng); // Atualiza a localização do carro
+    });
+    
+function updateMapWithNewData() {
+    let currentZoom = map.getZoom();
+    let currentCenter = map.getCenter();
+
+    // Atualize o mapa com os dados novos
+ 
+
+    // Restaura o zoom e a posição
+    map.setView(currentCenter, currentZoom);
+}
 }, function(error) {
     console.log("Erro ao obter a localização do usuário: ", error);
 });
